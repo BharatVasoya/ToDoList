@@ -6,6 +6,7 @@ import {
   Text,
   View,
   SafeAreaView,
+  FlatList,
 } from "react-native";
 import TaskInputField from "./src/components/TaskInputField";
 import TaskItem from "./src/components/TaskItem";
@@ -26,19 +27,21 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>TODO LIST</Text>
-      <ScrollView style={styles.scrollView}>
-        {tasks.map((task, index) => {
-          return (
-            <View key={index} style={styles.taskContainer}>
-              <TaskItem
-                index={index + 1}
-                task={task}
-                deleteTask={() => deleteTask(index)}
-              />
-            </View>
-          );
-        })}
-      </ScrollView>
+      <FlatList
+      style={{ marginBottom: 50, }}
+        data={tasks}
+        keyExtractor={(item) => item.key}
+        renderItem={({ item, index }) => (
+          <View key={index} style={styles.taskContainer}>
+            <TaskItem
+              key={index}
+              index={index + 1}
+              task={item}
+              deleteTask={() => deleteTask(index)}
+            />
+          </View>
+        )}
+      />
       <TaskInputField addTask={addTask} />
     </SafeAreaView>
   );
@@ -56,9 +59,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 10,
     marginLeft: 20,
-  },
-  scrollView: {
-    marginBottom: 70,
   },
   taskContainer: {
     marginTop: 20,
